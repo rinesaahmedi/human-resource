@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "prisma:init": "npx prisma migrate dev && npx prisma generate"
   },
   "keywords": [],
   "author": "",
