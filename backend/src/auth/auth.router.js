@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 // Services
 const authService = require("./auth.service");
 
 // Signup route
 router.post("/signup", async (req, res) => {
-  console.log("REQ_BODY", req.body);
   const { username, password } = req?.body || {};
 
   // Validate the data
@@ -41,10 +41,24 @@ router.post("/signin", async (req, res) => {
     );
   }
 
+  const data = await authService.signin(username, password);
+
+  let token;
+
+  token = jwt.sign(
+    {
+      userId: data.id,
+      userName: data.username,
+      role: data.role,
+    },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: process.env.JWT_EXPIRES_IN }
+  );
+
   try {
     return res.json({
       success: true,
-      data: await authService.signin(username, password),
+      data: { data, token },
     });
   } catch (error) {
     console.log(error);

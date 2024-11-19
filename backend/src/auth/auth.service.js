@@ -1,4 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
+const jwt = require("jsonwebtoken");
+const { config } = require("dotenv");
+config();
 
 const prisma = new PrismaClient();
 
@@ -25,6 +28,7 @@ async function signin(username, password) {
   const existingUser = await prisma.user.findFirstOrThrow({
     where: { username },
   });
+
   // check if passwords are the same
   const { passwordHash } = existingUser;
 
