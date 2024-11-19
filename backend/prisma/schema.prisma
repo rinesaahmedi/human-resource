@@ -1,0 +1,89 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int    @id @default(autoincrement())
+  username     String @unique
+  passwordHash String
+  role         String
+}
+
+model Employee {
+  id           Int       @id @default(autoincrement())
+  name         String
+  contact      String?
+  departmentId Int?
+  roleId       Int?
+  Department   Department? @relation(fields: [departmentId], references: [id])
+  Role         Role?       @relation(fields: [roleId], references: [id])
+  Attendance   Attendance[]
+  LeaveRequest LeaveRequest[]
+  Payroll      Payroll[]
+  Review       Review[]
+  Task         Task[]
+}
+
+model Department {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  Employees   Employee[]
+}
+
+model Role {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  permissions String?
+  Employees   Employee[]
+}
+
+model Attendance {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  date       DateTime
+  status     String
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+model LeaveRequest {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  startDate  DateTime
+  endDate    DateTime
+  status     String
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Payroll {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  basicSalary Float
+  bonuses    Float?
+  deductions Float?
+  netPay     Float
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  reviewDate DateTime
+  comments   String?
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Task {
+  id              Int      @id @default(autoincrement())
+  employeeId      Int
+  taskDescription String
+  dueDate         DateTime
+  status          String
+  Employee        Employee @relation(fields: [employeeId], references: [id])
+}
