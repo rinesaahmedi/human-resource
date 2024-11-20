@@ -36,8 +36,6 @@ app.use((req, res, next) => {
 
   const token = authHeader.split(" ")[1];
 
-  console.log("secret", process.env.JWT_SECRET_KEY);
-
   // Verify token
   jwt.verify(token.trim(), process.env.JWT_SECRET_KEY, (err, user) => {
     console.log("usr", err);

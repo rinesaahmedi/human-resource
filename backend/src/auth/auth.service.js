@@ -32,8 +32,22 @@ async function signin(username, password) {
   // check if passwords are the same
   const { passwordHash } = existingUser;
 
-  // return the user
-  return comparePassword(password, passwordHash);
+  // check if hash match
+  comparePassword(password, passwordHash);
+
+  let token;
+
+  token = jwt.sign(
+    {
+      userId: existingUser.id,
+      userName: existingUser.username,
+      role: existingUser.role,
+    },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: process.env.JWT_EXPIRES_IN }
+  );
+
+  return { user: existingUser, token };
 }
 
 module.exports = {

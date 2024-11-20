@@ -41,24 +41,10 @@ router.post("/signin", async (req, res) => {
     );
   }
 
-  const data = await authService.signin(username, password);
-
-  let token;
-
-  token = jwt.sign(
-    {
-      userId: data.id,
-      userName: data.username,
-      role: data.role,
-    },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: process.env.JWT_EXPIRES_IN }
-  );
-
   try {
     return res.json({
       success: true,
-      data: { data, token },
+      data: { data: await authService.signin(username, password) },
     });
   } catch (error) {
     console.log(error);
