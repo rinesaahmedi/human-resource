@@ -1,7 +1,7 @@
 import Input from "../Input";
 import Button from "../Buttons/Button";
 
-const SignIn = () => {
+const SignUp = () => {
   return (
     <div className="flex bg-sky-100">
       <div className="w-1/2 h-screen">
@@ -13,21 +13,21 @@ const SignIn = () => {
       </div>
       <div className="flex flex-col items-center justify-center w-1/2 h-screen gap-4">
         <form className="flex flex-col justify-center w-3/5 gap-4">
-          <h1 className="text-3xl font-medium">Login</h1>
+          <h1 className="text-3xl font-medium">Sign Up</h1>
           <Input type="text" name="Username" label="Username"></Input>
           <Input type="password" name="password" label="Password"></Input>
           <Button
             className="mt-3"
-            title="Log in"
+            title="SIgn up"
             variant="red"
             onClick={() => console.log("submitted")}
           />
           {/* This needs to change to be a link */}
-          <h2 className="text-green-500">Sign up here</h2>
+          <h2 className="text-green-500">Already have an account</h2>
         </form>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;
