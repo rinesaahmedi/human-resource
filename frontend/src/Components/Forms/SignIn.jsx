@@ -14,8 +14,8 @@ const SignIn = () => {
       <div className="flex flex-col items-center justify-center w-1/2 h-screen gap-4">
         <form className="flex flex-col justify-center w-3/5 gap-4">
           <h1 className="text-3xl font-medium">Login</h1>
-          <Input type="text" name="Username" label="Username"></Input>
-          <Input type="password" name="password" label="Password"></Input>
+          <Input type="text" name="Username" label="Username" />
+          <Input type="password" name="password" label="Password" />
           <Button
             className="mt-3"
             title="Log in"
