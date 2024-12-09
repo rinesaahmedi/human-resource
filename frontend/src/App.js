@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from "react";
+import SignIn from "./Components/Forms/SignIn";
+import SignUp from "./Components/Forms/SignUp";
 
 function App() {
-  const [backendData, setBackendData] = useState([{}]);
-
-  useEffect(() => {
-    fetch("/api")
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendData(data);
-      });
-  }, []);
   return (
     <div>
-      {typeof backendData.users === "undefined" ? (
-        <p>loading...</p>
-      ) : (
-        backendData.users.map((user, i) => <p>{user}</p>)
-      )}
+      <SignUp />
+      <SignIn />
     </div>
   );
 }
