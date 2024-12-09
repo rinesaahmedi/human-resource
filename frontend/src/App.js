@@ -1,11 +1,24 @@
-import SignIn from "./Components/Forms/SignIn";
-import SignUp from "./Components/Forms/SignUp";
+import { useEffect } from "react";
+import { useNavigate, Route, Routes } from "react-router-dom";
+
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Home from "./pages/Home";
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/signin");
+  }, [navigate]);
+
   return (
     <div>
-      <SignUp />
-      <SignIn />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
     </div>
   );
 }

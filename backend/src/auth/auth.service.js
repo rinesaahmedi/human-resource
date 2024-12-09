@@ -12,7 +12,6 @@ const {
 
 async function signup(username, password) {
   const passwordHash = createPasswordHash(password);
-  console.log(passwordHash.hash);
 
   return prisma.user.create({
     data: {
