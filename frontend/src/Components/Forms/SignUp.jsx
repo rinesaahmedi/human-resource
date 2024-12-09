@@ -1,5 +1,5 @@
 import Input from "../Input";
-import Button from "../Buttons/Button";
+import Button from "../Button";
 
 const SignUp = () => {
   return (
