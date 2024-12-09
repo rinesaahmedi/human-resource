@@ -21,27 +21,27 @@ model Employee {
   contact      String?
   departmentId Int?
   roleId       Int?
-  Department   Department? @relation(fields: [departmentId], references: [id])
-  Role         Role?       @relation(fields: [roleId], references: [id])
-  Attendance   Attendance[]
-  LeaveRequest LeaveRequest[]
-  Payroll      Payroll[]
-  Review       Review[]
-  Task         Task[]
+  department   Department? @relation(fields: [departmentId], references: [id])
+  role         Role?       @relation(fields: [roleId], references: [id])
+  attendance   Attendance[]
+  leaveRequest LeaveRequest[]
+  payroll      Payroll[]
+  review       Review[]
+  task         Task[]
 }
 
 model Department {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   description String?
-  Employees   Employee[]
+  employees   Employee[]
 }
 
 model Role {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   permissions String?
-  Employees   Employee[]
+  employees   Employee[]
 }
 
 model Attendance {
@@ -49,7 +49,7 @@ model Attendance {
   employeeId Int
   date       DateTime
   status     String
-  Employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id])
 }
 
 model LeaveRequest {
@@ -58,7 +58,7 @@ model LeaveRequest {
   startDate  DateTime
   endDate    DateTime
   status     String
-  Employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Payroll {
@@ -68,7 +68,7 @@ model Payroll {
   bonuses    Float?
   deductions Float?
   netPay     Float
-  Employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Review {
@@ -76,7 +76,7 @@ model Review {
   employeeId Int
   reviewDate DateTime
   comments   String?
-  Employee   Employee @relation(fields: [employeeId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Task {
@@ -85,5 +85,5 @@ model Task {
   taskDescription String
   dueDate         DateTime
   status          String
-  Employee        Employee @relation(fields: [employeeId], references: [id])
+  employee        Employee @relation(fields: [employeeId], references: [id])
 }
