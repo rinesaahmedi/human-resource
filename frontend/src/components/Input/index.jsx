@@ -1,7 +1,7 @@
-const Input = ({ type, label, name }) => {
+const Input = ({ type, label, name, error, register }) => {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-slate-800" for={label}>
+      <label className="text-slate-800" htmlFor={label}>
         {label}
       </label>
       <input
@@ -9,7 +9,9 @@ const Input = ({ type, label, name }) => {
         type={type}
         id={name}
         name={name}
+        {...register(name)}
       />
+      <p className="text-red-500">{error}</p>
     </div>
   );
 };
