@@ -10,7 +10,7 @@ config();
 const authRouter = require("./auth/auth.router");
 const employeeRouter = require("./employee/employee.router");
 
-const publicRoutes = ["/api/auth/signin", "/api/auth/signup"];
+const publicRoutes = ["/api/auth/signin", "/api/auth/signup", "/api"];
 
 // Configure app
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -44,7 +44,7 @@ router.post("/signin", async (req, res) => {
   try {
     return res.json({
       success: true,
-      data: { data: await authService.signin(username, password) },
+      data: await authService.signin(username, password),
     });
   } catch (error) {
     console.log(error);
