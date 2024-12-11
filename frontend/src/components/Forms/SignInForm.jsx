@@ -1,11 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import Input from "../Input";
 import Button from "../Button";
-import { useState } from "react";
 
 const usernameRegEx = /^(?=.{3,16}$)[a-zA-Z0-9](?:[a-zA-Z0-9_-]*[a-zA-Z0-9])?$/;
 
@@ -20,7 +19,7 @@ const formSchema = yup.object().shape({
     .min(8, "Password must be at least 8 characters"),
 });
 
-const SignInForm = () => {
+const SignInForm = ({ onSubmit, error }) => {
   const {
     register,
     handleSubmit,
@@ -28,36 +27,6 @@ const SignInForm = () => {
   } = useForm({
     resolver: yupResolver(formSchema),
   });
-  const [error, setError] = useState("");
-  let navigate = useNavigate();
-
-  async function onSubmit(formData) {
-    try {
-      const response = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("Signin successful:", data);
-        const accessToken = data.data.token;
-        //storing user data in localstorage
-        localStorage.setItem("accessToken", JSON.stringify(accessToken));
-        navigate("/", { replace: true });
-      } else {
-        console.error("Signin failed:", data);
-        setError(data.message);
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setError(error);
-    }
-  }
 
   return (
     <form

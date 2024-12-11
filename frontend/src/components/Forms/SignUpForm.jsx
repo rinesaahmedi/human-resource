@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -23,7 +23,7 @@ const signUpSchema = yup.object().shape({
     .oneOf([yup.ref("password"), null], "Passwords must match"),
 });
 
-const SignUpForm = () => {
+const SignUpForm = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -31,33 +31,6 @@ const SignUpForm = () => {
   } = useForm({
     resolver: yupResolver(signUpSchema),
   });
-
-  let navigate = useNavigate();
-
-  async function onSubmit(formData) {
-    const { username, password } = formData;
-    try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      console.log("Form Submitted", response);
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("Signup successful:", data);
-        navigate("/signin", { replace: true });
-      } else {
-        console.error("Signup failed:", data);
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  }
 
   return (
     <form
