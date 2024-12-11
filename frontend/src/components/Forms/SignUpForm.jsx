@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -32,9 +32,32 @@ const SignUpForm = () => {
     resolver: yupResolver(signUpSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Submitted", data);
-  };
+  let navigate = useNavigate();
+
+  async function onSubmit(formData) {
+    const { username, password } = formData;
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      console.log("Form Submitted", response);
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Signup successful:", data);
+        navigate("/signin", { replace: true });
+      } else {
+        console.error("Signup failed:", data);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
 
   return (
     <form
@@ -67,7 +90,7 @@ const SignUpForm = () => {
         error={errors.confirmPassword?.message}
       />
 
-      <Button className="mt-3" title="Sign Up" variant="red" type="submit" />
+      <Button className="mt-3" title="Sign Up" variant="blue" type="submit" />
 
       <Link className="text-green-500" to={"/signin"}>
         Already have an account?
