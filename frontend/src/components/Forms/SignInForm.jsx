@@ -19,7 +19,7 @@ const formSchema = yup.object().shape({
     .min(8, "Password must be at least 8 characters"),
 });
 
-const SignInForm = ({ onSubmit, error }) => {
+const SignInForm = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -50,7 +50,6 @@ const SignInForm = ({ onSubmit, error }) => {
         register={register}
         error={errors.password?.message}
       />
-      {error && <p className="text-red-500">{error}</p>}
 
       <Button className="mt-3" title="Log in" variant="blue" type="submit" />
 
