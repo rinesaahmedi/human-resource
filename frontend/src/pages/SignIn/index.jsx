@@ -20,7 +20,6 @@ const SignIn = () => {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Signin successful:", data);
       const accessToken = data.data.token;
       localStorage.setItem("accessToken", JSON.stringify(accessToken));
       navigate("/");

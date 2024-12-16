@@ -18,7 +18,6 @@ const SignUp = () => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Signup successful:", data);
         navigate("/signin", { replace: true });
       } else {
         console.error("Signup failed:", data);
