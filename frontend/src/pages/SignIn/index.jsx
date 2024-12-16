@@ -1,35 +1,33 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import SignInForm from "../../components/Forms/SignInForm";
 
 const SignIn = () => {
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   async function onSubmit(formData) {
-    try {
-      const response = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    const response = await fetch("/api/auth/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok) {
-        console.log("Signin successful:", data);
-        const accessToken = data.data.token;
-        localStorage.setItem("accessToken", JSON.stringify(accessToken));
-        navigate("/", { replace: true });
-      } else {
-        console.error("Signin failed:", data);
-        setError(data.message);
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setError("An unexpected error occurred. Please try again.");
+    if (response.ok) {
+      console.log("Signin successful:", data);
+      const accessToken = data.data.token;
+      localStorage.setItem("accessToken", JSON.stringify(accessToken));
+      navigate("/");
+      toast.success("Sign in successfully");
+    } else {
+      console.error("Signin failed:", data);
+      toast.error(data.message || "Sign-in failed. Please try again.");
     }
   }
 
@@ -43,7 +41,7 @@ const SignIn = () => {
         />
       </div>
       <div className="flex flex-col items-center justify-center w-1/2 h-screen gap-4">
-        <SignInForm onSubmit={onSubmit} error={error} />
+        <SignInForm onSubmit={onSubmit} />
       </div>
     </div>
   );
