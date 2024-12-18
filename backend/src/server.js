@@ -38,7 +38,6 @@ app.use((req, res, next) => {
 
   // Verify token
   jwt.verify(token.trim(), process.env.JWT_SECRET_KEY, (err, user) => {
-    console.log("usr", err);
     if (err) {
       return res.status(403).json({ message: "Invalid or expired token." });
     }
