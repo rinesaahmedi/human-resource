@@ -39,15 +39,15 @@ const SignInForm = ({ onSubmit }) => {
         type="text"
         name="username"
         label="Username"
-        register={register}
+        {...register("username")}
         error={errors.username?.message}
       />
 
       <Input
         type="password"
+        {...register("password")}
         name="password"
         label="Password"
-        register={register}
         error={errors.password?.message}
       />
 

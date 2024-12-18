@@ -1,14 +1,18 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+
+import useUserStore from "./Stores/userStore";
+
+import Users from "./pages/Users";
+import User from "./pages/User";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
-import MainLayout from "./components/MainLayout";
 import Employees from "./pages/Employees";
-import useUserStore from "./Stores/userStore";
-import { MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
-import Users from "./pages/Users";
+
+import MainLayout from "./components/MainLayout";
 
 function ProtectedRoute({ children }) {
   const { isSignedIn } = useUserStore();
@@ -33,11 +37,10 @@ const App = () => {
           }
         >
           <Route index element={<Home />} />
-
           <Route path="/employees" element={<Employees />} />
           <Route path="/users" element={<Users />} />
           <Route path="/reports" element={<Employees />} />
-          <Route path="/my-profile" element={<h1>Kuje o user</h1>} />
+          <Route path="/my-profile/:id" element={<User />} />
         </Route>
       </Routes>
     </MantineProvider>

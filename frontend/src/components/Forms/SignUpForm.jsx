@@ -43,7 +43,7 @@ const SignUpForm = ({ onSubmit }) => {
         type="text"
         name="username"
         label="Username"
-        register={register}
+        {...register("username")}
         error={errors.username?.message}
       />
 
@@ -51,7 +51,7 @@ const SignUpForm = ({ onSubmit }) => {
         type="password"
         name="password"
         label="Password"
-        register={register}
+        {...register("password")}
         error={errors.password?.message}
       />
 
@@ -59,7 +59,7 @@ const SignUpForm = ({ onSubmit }) => {
         type="password"
         name="confirmPassword"
         label="Confirm Password"
-        register={register}
+        {...register("confirmPassword")}
         error={errors.confirmPassword?.message}
       />
 

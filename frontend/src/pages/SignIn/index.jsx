@@ -10,29 +10,36 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { setUser, setAccessToken } = useUserStore();
 
-  async function onSubmit(formData) {
-    const response = await fetch("/api/auth/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+  const onSubmit = async (formData) => {
+    try {
+      const response = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await response.json();
-    if (response.ok) {
-      const accessToken = data.data.token;
-      const user = data.data.user;
-      localStorage.setItem("accessToken", JSON.stringify(accessToken));
-      setUser(user.username);
-      setAccessToken(accessToken);
-      navigate("/users");
-      toast.success("Sign in successfully");
-    } else {
-      console.error("Signin failed:", data);
-      toast.error(data.message || "Sign-in failed. Please try again.");
+      const data = await response.json();
+
+      if (response.ok) {
+        const accessToken = data.data.token;
+        const user = data.data.user;
+
+        setUser(user);
+        setAccessToken(accessToken);
+        localStorage.setItem("accessToken", JSON.stringify(accessToken));
+        navigate("/users");
+        toast.success("Sign in successfully");
+      } else {
+        console.error("Sign-in failed:", data);
+        toast.error(data.message || "Sign-in failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Sign-in error:", error);
+      toast.error("An error occurred during sign-in.");
     }
-  }
+  };
 
   return (
     <div className="flex bg-sky-100">

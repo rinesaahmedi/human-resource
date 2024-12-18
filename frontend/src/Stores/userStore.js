@@ -3,12 +3,12 @@ import { persist } from "zustand/middleware";
 
 const useUserStore = create(
   persist((set, get) => ({
-    username: null,
+    user: null,
     accessToken: "",
     isSignedIn: () => !!get().accessToken,
-    setUser: (username) => set({ username }),
+    setUser: (user) => set({ user }),
     setAccessToken: (token) => set({ accessToken: token }),
-    clearUser: () => set({ username: null }),
+    clearUser: () => set({ user: null, accessToken: "" }),
   }))
 );
 

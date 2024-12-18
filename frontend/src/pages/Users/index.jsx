@@ -8,12 +8,14 @@ import CustomModal from "../../components/Modals";
 import UserTable from "../../components/Table/UsersTable";
 import CreateUser from "../../components/Forms/CreateUser";
 import UpdateUser from "../../components/Forms/UpdateUser";
+import { useNavigate } from "react-router-dom";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [activeUser, setActiveUser] = useState();
+  const navigate = useNavigate();
 
   const buttonRef = useRef();
 
@@ -40,7 +42,7 @@ const Users = () => {
     {
       icon: <FaEye />,
       title: "View",
-      handleClick: (item) => setIsCreateModalOpen(true),
+      handleClick: (item) => navigate(`/my-profile/${item.id}?fromUser=true`),
     },
     {
       icon: <FaEdit />,
