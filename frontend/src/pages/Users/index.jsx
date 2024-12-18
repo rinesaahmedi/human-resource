@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { toast } from "react-toastify";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import { Button, Card } from "@mantine/core";
 
 import CustomModal from "../../components/Modals";
-import { EmployeeTable } from "../../components/Table/EmployeesTable";
-import CreateEmployee from "../../components/Forms/CreateEmployee";
+import UserTable from "../../components/Table/UsersTable";
+import CreateUser from "../../components/Forms/CreateUser";
+import UpdateUser from "../../components/Forms/UpdateUser";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [activeUser, setActiveUser] = useState();
+
   const buttonRef = useRef();
 
-  const handleGetEmployees = async () => {
+  const handleGetUsers = async () => {
     const response = await fetch("/api/user", {
       method: "GET",
       headers: {
@@ -34,18 +38,26 @@ const Users = () => {
 
   const actions = [
     {
+      icon: <FaEye />,
+      title: "View",
+      handleClick: (item) => setIsCreateModalOpen(true),
+    },
+    {
       icon: <FaEdit />,
       title: "Edit",
-      handleClick: (item) => setIsOpen(true),
+      handleClick: (item) => {
+        setActiveUser(item);
+        setIsUpdateModalOpen(true);
+      },
     },
     {
       icon: <FaTrashAlt />,
       title: "Delete",
-      handleClick: (item) => onDelete(item),
+      handleClick: (item) => onDelete(item.id),
     },
   ];
 
-  async function onSubmit(formData) {
+  const handleCreateUser = async (formData) => {
     const response = await fetch("/api/user", {
       method: "POST",
       headers: {
@@ -59,14 +71,14 @@ const Users = () => {
 
     const data = await response.json();
     if (response.ok) {
-      handleGetEmployees();
-      setIsOpen(false);
+      handleGetUsers();
+      setIsCreateModalOpen(false);
     } else {
       toast.error(data.message || "Something went wrong!");
     }
-  }
+  };
 
-  async function onDelete(id) {
+  const onDelete = async (id) => {
     const response = await fetch(`/api/user/${id}`, {
       method: "DELETE",
       headers: {
@@ -78,14 +90,36 @@ const Users = () => {
     });
     const data = await response.json();
     if (response.ok) {
-      handleGetEmployees();
+      handleGetUsers();
     } else {
       toast.error(data.message || "Something went wrong!");
     }
-  }
+  };
+
+  const handleOnUpdate = async (body) => {
+    const response = await fetch(`/api/user/${activeUser.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      handleGetUsers();
+      setIsUpdateModalOpen(false);
+      toast.success("User Updated");
+    } else {
+      toast.error(data.message || "Something went wrong!");
+    }
+  };
 
   useEffect(() => {
-    handleGetEmployees();
+    handleGetUsers();
   }, []);
   return (
     <div>
@@ -93,11 +127,11 @@ const Users = () => {
         <div className="flex flex-col gap-7">
           <div className="flex items-center justify-between">
             <h3 className="text-2xl font-semibold">Users</h3>
-            <Button onClick={() => setIsOpen(true)} title="Employee">
+            <Button onClick={() => setIsCreateModalOpen(true)} title="Employee">
               Add User
             </Button>
           </div>
-          <EmployeeTable
+          <UserTable
             actions={actions}
             headers={[
               { title: "Username" },
@@ -113,12 +147,28 @@ const Users = () => {
         onSubmit={() => {
           buttonRef.current.click?.();
         }}
-        onCancel={() => setIsOpen(false)}
+        onCancel={() => setIsCreateModalOpen(false)}
         title="Create User"
-        isOpen={isOpen}
-        onClose={() => setIsOpen(!isOpen)}
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(!isCreateModalOpen)}
       >
-        <CreateEmployee ref={buttonRef} handleOnSubmit={onSubmit} />
+        <CreateUser ref={buttonRef} handleOnSubmit={handleCreateUser} />
+      </CustomModal>
+      <CustomModal
+        showActionButtons
+        onSubmit={() => {
+          buttonRef.current.click?.();
+        }}
+        onCancel={() => setIsUpdateModalOpen(false)}
+        title="Update User"
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(!isUpdateModalOpen)}
+      >
+        <UpdateUser
+          activeUser={activeUser}
+          ref={buttonRef}
+          handleOnSubmit={handleOnUpdate}
+        />
       </CustomModal>
     </div>
   );
