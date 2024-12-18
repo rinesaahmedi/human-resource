@@ -5,9 +5,10 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import MainLayout from "./components/MainLayout";
 import Employees from "./pages/Employees";
+import useUserStore from "./Stores/userStore";
 
 function ProtectedRoute({ children }) {
-  const accessToken = localStorage.getItem("accessToken");
+  const { accessToken } = useUserStore();
   return accessToken ? children : <Navigate to="/signin" />;
 }
 
@@ -28,8 +29,10 @@ const App = () => {
         }
       >
         <Route index element={<Home />} />
-        <Route path="employees" element={<Employees />} />
-        <Route path="users" element={<h1>Kuje o user</h1>} />
+        <Route path="/employees" element={<Employees />} />
+        <Route path="/users" element={<h1>Kuje o user</h1>} />
+        <Route path="/reports" element={<Employees />} />
+        <Route path="/my-profile" element={<h1>Kuje o user</h1>} />
       </Route>
     </Routes>
   );
