@@ -1,15 +1,18 @@
 import React from "react";
 
+import useUserStore from "../../Stores/userStore";
+
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../Button";
 
 const SideBar = () => {
   const navigate = useNavigate();
-  const username = localStorage.getItem("username");
+  const { username, clearUser } = useUserStore();
 
   const handleSignOut = () => {
     localStorage.clear();
     navigate("/signin");
+    clearUser();
   };
 
   return (
