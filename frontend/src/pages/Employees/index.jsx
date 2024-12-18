@@ -1,9 +1,10 @@
 import React from "react";
+import TableReviews from "../../components/Table";
 
 const Employees = () => {
   return (
     <div>
-      <h1 className="text-red-500">Employees</h1>
+      <TableReviews />
     </div>
   );
 };
