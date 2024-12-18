@@ -1,16 +1,12 @@
-import { Anchor, Table } from "@mantine/core";
+import { Table } from "@mantine/core";
 
 export const UserTable = (props) => {
   const rows = props.data.map((row) => {
     return (
       <Table.Tr key={row.name}>
-        <Table.Td key={row.id}>
-          <Anchor component="button" fz="sm">
-            {row.username}
-          </Anchor>
-        </Table.Td>
+        <Table.Td key={row.id}>{row.username}</Table.Td>
         <Table.Td>{row.departmentId || "N/A"}</Table.Td>
-        <Table.Td>{row.contact}</Table.Td>
+        <Table.Td>{row.role}</Table.Td>
         {props.actions && (
           <Table.Td className="flex gap-4">
             {props.actions.map((item) => {

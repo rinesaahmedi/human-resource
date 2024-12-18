@@ -136,7 +136,7 @@ const Users = () => {
             headers={[
               { title: "Username" },
               { title: "Email" },
-              { title: "Age" },
+              { title: "Role" },
             ]}
             data={users}
           />
