@@ -8,13 +8,13 @@ import CustomModal from "../../components/Modals";
 import { EmployeeTable } from "../../components/Table/EmployeesTable";
 import CreateEmployee from "../../components/Forms/CreateEmployee";
 
-const Employees = () => {
-  const [employees, setEmployees] = useState([]);
+const Users = () => {
+  const [users, setUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef();
 
   const handleGetEmployees = async () => {
-    const response = await fetch("/api/employee", {
+    const response = await fetch("/api/user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const Employees = () => {
 
     const responseToJson = await response.json();
     if (response.ok) {
-      setEmployees(responseToJson.data);
+      setUsers(responseToJson.data);
     } else {
       toast.error(responseToJson.message || "Something went wrong!");
     }
@@ -46,7 +46,7 @@ const Employees = () => {
   ];
 
   async function onSubmit(formData) {
-    const response = await fetch("/api/employee", {
+    const response = await fetch("/api/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const Employees = () => {
   }
 
   async function onDelete(id) {
-    const response = await fetch(`/api/employee/${id}`, {
+    const response = await fetch(`/api/user/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -92,19 +92,19 @@ const Employees = () => {
       <Card>
         <div className="flex flex-col gap-7">
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">Employees</h3>
+            <h3 className="text-2xl font-semibold">Users</h3>
             <Button onClick={() => setIsOpen(true)} title="Employee">
-              Add Employee
+              Add User
             </Button>
           </div>
           <EmployeeTable
             actions={actions}
             headers={[
-              { title: "Employee" },
-              { title: "Department" },
-              { title: "Contact" },
+              { title: "Username" },
+              { title: "Email" },
+              { title: "Age" },
             ]}
-            data={employees}
+            data={users}
           />
         </div>
       </Card>
@@ -114,7 +114,7 @@ const Employees = () => {
           buttonRef.current.click?.();
         }}
         onCancel={() => setIsOpen(false)}
-        title="Create Employee"
+        title="Create User"
         isOpen={isOpen}
         onClose={() => setIsOpen(!isOpen)}
       >
@@ -124,4 +124,4 @@ const Employees = () => {
   );
 };
 
-export default Employees;
+export default Users;

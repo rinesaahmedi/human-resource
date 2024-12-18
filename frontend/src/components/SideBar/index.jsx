@@ -21,6 +21,7 @@ const SideBar = () => {
               const isActive = pathname === item.path;
               return (
                 <li
+                  key={item.path}
                   className={`flex items-center gap-2 px-2 py-4 ${
                     isActive ? " bg-amber-100 rounded-lg" : ""
                   }`}
