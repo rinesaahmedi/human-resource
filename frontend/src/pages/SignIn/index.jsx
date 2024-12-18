@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useUserStore from "../../Stores/userStore";
 
+import useUserStore from "../../Stores/userStore";
 import SignInForm from "../../components/Forms/SignInForm";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { setUser } = useUserStore();
+  const { setUser, setAccessToken } = useUserStore();
 
   async function onSubmit(formData) {
     const response = await fetch("/api/auth/signin", {
@@ -25,7 +25,8 @@ const SignIn = () => {
       const user = data.data.user;
       localStorage.setItem("accessToken", JSON.stringify(accessToken));
       setUser(user.username);
-      navigate("/");
+      setAccessToken(accessToken);
+      navigate("/users");
       toast.success("Sign in successfully");
     } else {
       console.error("Signin failed:", data);

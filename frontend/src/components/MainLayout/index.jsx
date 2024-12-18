@@ -8,7 +8,7 @@ const MainLayout = () => {
   return (
     <div className="flex">
       <SideBar />
-      <div className="flex-1">
+      <div className="flex-1 p-10">
         <Outlet />
       </div>
     </div>
