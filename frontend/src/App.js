@@ -8,10 +8,11 @@ import Employees from "./pages/Employees";
 import useUserStore from "./Stores/userStore";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import Users from "./pages/Users";
 
 function ProtectedRoute({ children }) {
-  const { accessToken } = useUserStore();
-  return accessToken ? children : <Navigate to="/signin" />;
+  const { isSignedIn } = useUserStore();
+  return isSignedIn() ? children : <Navigate to="/signin" />;
 }
 
 const App = () => {
@@ -32,8 +33,9 @@ const App = () => {
           }
         >
           <Route index element={<Home />} />
+
           <Route path="/employees" element={<Employees />} />
-          <Route path="/users" element={<h1>Kuje o user</h1>} />
+          <Route path="/users" element={<Users />} />
           <Route path="/reports" element={<Employees />} />
           <Route path="/my-profile" element={<h1>Kuje o user</h1>} />
         </Route>
