@@ -10,8 +10,8 @@ import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 
 function ProtectedRoute({ children }) {
-  const { accessToken } = useUserStore();
-  return accessToken ? children : <Navigate to="/signin" />;
+  const { isSignedIn } = useUserStore();
+  return isSignedIn() ? children : <Navigate to="/signin" />;
 }
 
 const App = () => {
