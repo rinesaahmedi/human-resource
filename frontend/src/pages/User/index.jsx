@@ -10,9 +10,24 @@ import {
   Loader,
   Button,
   Modal,
-  TextInput,
-  PasswordInput,
 } from "@mantine/core";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+import Input from "../../components/Input";
+
+const schema = yup.object().shape({
+  currentPassword: yup.string().required("Name is required"),
+  newPassword: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters"),
+  confirmNewPassword: yup
+    .string()
+    .required("Please confirm your password")
+    .oneOf([yup.ref("newPassword"), null], "Passwords must match"),
+});
 
 const User = () => {
   const { id } = useParams();
@@ -24,8 +39,15 @@ const User = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isChangePasswordOpen, setChangePasswordOpen] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const handleGetUser = async (id) => {
     try {
@@ -43,6 +65,7 @@ const User = () => {
       if (response.ok) {
         setUser(responseToJson.data);
         setLoading(false);
+        reset();
       } else {
         setLoading(false);
         toast.error(responseToJson.message || "Something went wrong!");
@@ -58,37 +81,31 @@ const User = () => {
     navigate("/signin");
   };
 
-  const handleChangePassword = async () => {
-    if (!currentPassword || !newPassword) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-
+  const handleChangePassword = async (formData) => {
     try {
-      const response = await fetch(`/api/user/change-password`, {
-        method: "POST",
+      const response = await fetch(`/api/user/change-password/${id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${JSON.parse(
             localStorage.getItem("accessToken")
           )}`,
         },
-        body: JSON.stringify({
-          currentPassword,
-          newPassword,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
+
       if (response.ok) {
         toast.success("Password updated successfully!");
         setChangePasswordOpen(false);
-        setCurrentPassword("");
-        setNewPassword("");
       } else {
-        toast.error(data.message || "Failed to update password.");
+        toast.error(
+          data.message || "Opss! something went wrong. Please try again later"
+        );
       }
     } catch (error) {
+      console.log("ERR", error);
       toast.error("Something went wrong. Please try again.");
     }
   };
@@ -157,25 +174,35 @@ const User = () => {
         title="Change Password"
         centered
       >
-        <TextInput
-          label="Current Password"
-          placeholder="Enter your current password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          type="password"
-          required
-        />
-        <PasswordInput
-          label="New Password"
-          placeholder="Enter your new password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          mt="sm"
-          required
-        />
-        <Button fullWidth mt="md" onClick={handleChangePassword}>
-          Update Password
-        </Button>
+        <form onSubmit={handleSubmit(handleChangePassword)}>
+          <Input
+            label="Current Password"
+            placeholder="Enter your current password"
+            {...register("currentPassword")}
+            error={errors?.currentPassword?.message}
+            type="password"
+            required
+          />
+          <Input
+            label="New Password"
+            placeholder="Enter your new password"
+            {...register("newPassword")}
+            error={errors?.newPassword?.message}
+            mt="sm"
+            required
+          />
+          <Input
+            label="Confirm New Password"
+            placeholder="Please confirm your new password"
+            {...register("confirmNewPassword")}
+            error={errors?.confirmNewPassword?.message}
+            mt="sm"
+            required
+          />
+          <Button type="submit" fullWidth mt="md">
+            Update Password
+          </Button>
+        </form>
       </Modal>
     </div>
   );
