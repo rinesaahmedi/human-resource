@@ -15,6 +15,7 @@ import Employees from "./pages/Employees";
 import MainLayout from "./components/MainLayout";
 import EmployeeView from "./pages/Employees/Employee";
 import Department from "./pages/Department";
+import Reviews from "./pages/Reviews";
 
 function ProtectedRoute({ children }) {
   const { isSignedIn } = useUserStore();
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="/my-profile/:id" element={<User />} />
           <Route path="/employee/:id" element={<EmployeeView />} />
           <Route path="/department" element={<Department />} />
+          <Route path="/reviews" element={<Reviews />} />
         </Route>
       </Routes>
     </MantineProvider>
