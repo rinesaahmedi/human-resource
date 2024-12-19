@@ -6,9 +6,9 @@ import SideBar from "../SideBar";
 
 const MainLayout = () => {
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <SideBar />
-      <div className="flex-1 p-10 bg-slate-100">
+      <div className="flex-1 p-10 overflow-hidden bg-slate-100">
         <Outlet />
       </div>
     </div>

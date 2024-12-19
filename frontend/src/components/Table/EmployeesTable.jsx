@@ -1,4 +1,4 @@
-import { Anchor, Table } from "@mantine/core";
+import { Table } from "@mantine/core";
 
 export const EmployeeTable = (props) => {
   const rows = props.data.map((row) => {
