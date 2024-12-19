@@ -1,39 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-  TextInput,
-  Textarea,
-  NumberInput,
   Button,
   Card,
   Group,
   Title,
   Text,
-  Grid,
+  SimpleGrid,
+  ActionIcon,
 } from "@mantine/core";
 
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { toast } from "react-toastify";
-
-const validationSchema = yup.object().shape({
-  employeeId: yup
-    .number()
-    .typeError("Employee ID must be a number")
-    .required("Employee ID is required"),
-  reviewDate: yup
-    .date()
-    .typeError("Invalid date format")
-    .required("Review Date is required"),
-  comments: yup
-    .string()
-    .max(500, "Comments must not exceed 500 characters")
-    .nullable(),
-});
+import { FaEdit, FaTrash } from "react-icons/fa";
+import ReviewForm from "../../components/Forms/Reviews/CreateReview";
+import CustomModal from "../../components/Modals";
+import UpdateReviewForm from "../../components/Forms/Reviews/UpdateReview";
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [activeReview, setActiveReview] = useState();
+  const buttonRef = useRef();
 
   const fetchReviews = async () => {
     try {
@@ -49,7 +38,7 @@ const Reviews = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setReviews(data);
+        setReviews(data.data);
         setLoading(false);
       } else {
         toast.error(data.message || "Failed to load employee data!");
@@ -60,41 +49,90 @@ const Reviews = () => {
     }
   };
 
-  // Handle form submission to create a new review
   const handleCreateReview = async (payload) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/reviews", {
+      const response = await fetch("/api/review", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("accessToken")
+          )}`,
         },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        toast({
-          title: "Success",
-          message: "Review created successfully!",
-          color: "green",
-        });
-        fetchReviews(); // Refresh reviews
+        toast.success("Review created successfully!");
+        fetchReviews();
+        setIsCreateModalOpen(false);
       } else {
         const error = await response.json();
-        toast({
-          title: "Error",
-          message: error.message || "Failed to create review",
-          color: "red",
-        });
+        toast.error(error.message || "Failed to create review");
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        message: "Something went wrong",
-        color: "red",
-      });
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEditReview = async (payload) => {
+    setLoading(true);
+    delete payload.id;
+    delete payload.employee;
+    try {
+      const response = await fetch(`/api/review/${activeReview.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("accessToken")
+          )}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        toast.success("Review updated successfully!");
+        fetchReviews();
+        setIsUpdateModalOpen(false);
+      } else {
+        const error = await response.json();
+        toast.error(error.message || "Failed to create review");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    setDeleting(true);
+    try {
+      const response = await fetch(`/api/review/${reviewId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("accessToken")
+          )}`,
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Review deleted successfully!");
+        fetchReviews();
+      } else {
+        const error = await response.json();
+        toast.error(error.message || "Failed to delete review");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -104,117 +142,115 @@ const Reviews = () => {
 
   return (
     <div>
-      <Title order={2} mb="lg">
-        Reviews Page
-      </Title>
-
-      {/* Form for creating reviews */}
-      <Card shadow="sm" p="lg" radius="md" withBorder mb="lg">
-        <Title order={3} mb="md">
-          Create a Review
+      <div className="flex items-center justify-between w-full">
+        <Title order={2} className="m-0">
+          Reviews Page
         </Title>
-        <ReviewForm onSubmit={handleCreateReview} loading={loading} />
-      </Card>
+        <Button onClick={() => setIsCreateModalOpen(true)} mb="lg">
+          Add Review
+        </Button>
+      </div>
 
-      {/* Reviews list */}
-      <Grid>
-        {reviews.length &&
-          reviews?.map((review) => (
-            <Grid.Col sm={6} md={4} key={review.id}>
-              <ReviewCard review={review} />
-            </Grid.Col>
+      <SimpleGrid cols={3} spacing="lg">
+        {reviews.length > 0 &&
+          reviews.map((review) => (
+            <Card
+              key={review.id}
+              shadow="sm"
+              p="lg"
+              radius="md"
+              withBorder
+              style={{ position: "relative" }}
+            >
+              {/* Delete Button */}
+              <ActionIcon
+                variant="filled"
+                color="red"
+                onClick={() => handleDeleteReview(review.id)}
+                loading={deleting}
+                radius="md"
+                size="lg"
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                }}
+              >
+                <FaTrash />
+              </ActionIcon>
+
+              {/* Edit Button */}
+              <ActionIcon
+                variant="filled"
+                color="blue"
+                onClick={() => {
+                  setIsUpdateModalOpen(true);
+                  setActiveReview(review);
+                }}
+                radius="md"
+                size="lg"
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "50px",
+                }}
+              >
+                <FaEdit />
+              </ActionIcon>
+
+              <Text>
+                <strong>Employee ID:</strong> {review.employeeId}
+              </Text>
+              <Text>
+                <strong>Review Date:</strong>{" "}
+                {new Date(review.reviewDate).toLocaleDateString()}
+              </Text>
+              {review?.comments && (
+                <Text>
+                  <strong>Comments:</strong> {review.comments}
+                </Text>
+              )}
+
+              <Group position="apart" mt="md">
+                <Text weight={500}>Review Details</Text>
+              </Group>
+            </Card>
           ))}
-      </Grid>
+      </SimpleGrid>
+
+      <CustomModal
+        isOpen={isCreateModalOpen}
+        showActionButtons
+        onSubmit={() => {
+          buttonRef.current.click?.();
+        }}
+        onClose={() => setIsCreateModalOpen(false)}
+        title="Create a Review"
+      >
+        <ReviewForm
+          ref={buttonRef}
+          onSubmit={handleCreateReview}
+          loading={loading}
+        />
+      </CustomModal>
+      <CustomModal
+        isOpen={isUpdateModalOpen}
+        showActionButtons
+        onSubmit={() => {
+          buttonRef.current.click?.();
+        }}
+        onClose={() => setIsUpdateModalOpen(false)}
+        title="Update a Review"
+      >
+        <UpdateReviewForm
+          ref={buttonRef}
+          activeReview={activeReview}
+          onSubmit={handleEditReview}
+          loading={loading}
+        />
+      </CustomModal>
     </div>
   );
 };
-
-const ReviewForm = ({ onSubmit, loading }) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(validationSchema),
-    defaultValues: {
-      employeeId: "",
-      reviewDate: "",
-      comments: "",
-    },
-  });
-
-  const handleFormSubmit = (data) => {
-    onSubmit(data);
-    reset(); // Clear form after successful submission
-  };
-
-  return (
-    <form onSubmit={handleSubmit(handleFormSubmit)}>
-      <Controller
-        name="employeeId"
-        control={control}
-        render={({ field }) => (
-          <NumberInput
-            {...field}
-            label="Employee ID"
-            placeholder="Enter employee ID"
-            error={errors.employeeId?.message}
-            mb="sm"
-          />
-        )}
-      />
-      <Controller
-        name="reviewDate"
-        control={control}
-        render={({ field }) => (
-          <TextInput
-            {...field}
-            label="Review Date"
-            placeholder="Select review date"
-            type="date"
-            error={errors.reviewDate?.message}
-            mb="sm"
-          />
-        )}
-      />
-      <Controller
-        name="comments"
-        control={control}
-        render={({ field }) => (
-          <Textarea
-            {...field}
-            label="Comments"
-            placeholder="Enter comments (optional)"
-            error={errors.comments?.message}
-            mb="sm"
-          />
-        )}
-      />
-      <Group position="right">
-        <Button type="submit" loading={loading}>
-          Submit Review
-        </Button>
-      </Group>
-    </form>
-  );
-};
-
-const ReviewCard = ({ review }) => (
-  <Card shadow="sm" p="lg" radius="md" withBorder>
-    <Text>
-      <strong>Employee ID:</strong> {review.employeeId}
-    </Text>
-    <Text>
-      <strong>Review Date:</strong>{" "}
-      {new Date(review.reviewDate).toLocaleDateString()}
-    </Text>
-    {review?.comments && (
-      <Text>
-        <strong>Comments:</strong> {review.comments}
-      </Text>
-    )}
-  </Card>
-);
 
 export default Reviews;
