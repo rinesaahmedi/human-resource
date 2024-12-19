@@ -71,10 +71,7 @@ async function updateUserPassword(id, userData) {
     }
 
     if (!currentPassword) {
-      return res.status(400).json({
-        success: false,
-        message: "Current Password is required.",
-      });
+      throw new Error("Current password is required");
     }
 
     const userId = Number(id);
