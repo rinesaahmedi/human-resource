@@ -4,11 +4,7 @@ export const EmployeeTable = (props) => {
   const rows = props.data.map((row) => {
     return (
       <Table.Tr key={row.name}>
-        <Table.Td key={row.id}>
-          <Anchor component="button" fz="sm">
-            {row.name}
-          </Anchor>
-        </Table.Td>
+        <Table.Td key={row.id}>{row.name}</Table.Td>
         <Table.Td>{row.departmentId || "N/A"}</Table.Td>
         <Table.Td>{row.contact}</Table.Td>
         {props.actions && (
@@ -18,7 +14,7 @@ export const EmployeeTable = (props) => {
                 <button
                   className="p-2 rounded bg-slate-200"
                   key={item.title}
-                  onClick={() => item.handleClick(row.id)}
+                  onClick={() => item.handleClick(row)}
                 >
                   {item.icon}
                 </button>

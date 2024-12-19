@@ -6,11 +6,14 @@ import { Button, Card } from "@mantine/core";
 
 import CustomModal from "../../components/Modals";
 import { EmployeeTable } from "../../components/Table/EmployeesTable";
-import CreateEmployee from "../../components/Forms/CreateEmployee";
+import CreateEmployee from "../../components/Forms/Employee/CreateEmployee";
+import UpdateEmployee from "../../components/Forms/Employee/UpdateEmployee";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [activeEmployee, setActiveEmployee] = useState();
   const buttonRef = useRef();
 
   const handleGetEmployees = async () => {
@@ -36,12 +39,15 @@ const Employees = () => {
     {
       icon: <FaEdit />,
       title: "Edit",
-      handleClick: (item) => setIsOpen(true),
+      handleClick: (item) => {
+        setActiveEmployee(item);
+        setIsUpdateModalOpen(true);
+      },
     },
     {
       icon: <FaTrashAlt />,
       title: "Delete",
-      handleClick: (item) => onDelete(item),
+      handleClick: (item) => onDelete(item.id),
     },
   ];
 
@@ -60,11 +66,37 @@ const Employees = () => {
     const data = await response.json();
     if (response.ok) {
       handleGetEmployees();
-      setIsOpen(false);
+      setIsCreateModalOpen(false);
     } else {
       toast.error(data.message || "Something went wrong!");
     }
   }
+
+  const handleOnUpdate = async (body) => {
+    const payload = {
+      name: body.name,
+      contact: body.contact,
+    };
+    const response = await fetch(`/api/employee/${activeEmployee.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      handleGetEmployees();
+      setIsUpdateModalOpen(false);
+      toast.success("Employee Updated");
+    } else {
+      toast.error(data.message || "Something went wrong!");
+    }
+  };
 
   async function onDelete(id) {
     const response = await fetch(`/api/employee/${id}`, {
@@ -93,7 +125,7 @@ const Employees = () => {
         <div className="flex flex-col gap-7">
           <div className="flex items-center justify-between">
             <h3 className="text-2xl font-semibold">Employees</h3>
-            <Button onClick={() => setIsOpen(true)} title="Employee">
+            <Button onClick={() => setIsCreateModalOpen(true)} title="Employee">
               Add Employee
             </Button>
           </div>
@@ -113,12 +145,28 @@ const Employees = () => {
         onSubmit={() => {
           buttonRef.current.click?.();
         }}
-        onCancel={() => setIsOpen(false)}
+        onCancel={() => setIsCreateModalOpen(false)}
         title="Create Employee"
-        isOpen={isOpen}
-        onClose={() => setIsOpen(!isOpen)}
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(!isCreateModalOpen)}
       >
         <CreateEmployee ref={buttonRef} handleOnSubmit={onSubmit} />
+      </CustomModal>
+      <CustomModal
+        showActionButtons
+        onSubmit={() => {
+          buttonRef.current.click?.();
+        }}
+        onCancel={() => setIsUpdateModalOpen(false)}
+        title="Update Employee"
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(!isUpdateModalOpen)}
+      >
+        <UpdateEmployee
+          activeEmployee={activeEmployee}
+          ref={buttonRef}
+          handleOnSubmit={handleOnUpdate}
+        />
       </CustomModal>
     </div>
   );
