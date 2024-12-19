@@ -7,10 +7,8 @@ import useUserStore from "../../Stores/userStore";
 import { configRoutes } from "../../config/navigation.config";
 
 const SideBar = () => {
-  const { user } = useUserStore(); // Fetch `id` from Zustand store
+  const { user } = useUserStore();
   const { pathname } = useLocation();
-
-  console.log("USER", user);
 
   return (
     <div className="top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0">
@@ -28,13 +26,13 @@ const SideBar = () => {
               return (
                 <li
                   key={item.path}
-                  className={`flex items-center gap-2 px-2 py-4 ${
+                  className={`flex items-center gap-3 px-2 py-4 ${
                     isActive ? " bg-amber-100 rounded-lg" : ""
                   }`}
                 >
-                  {item.icon}
+                  <span>{item.icon}</span>
                   <Link
-                    className={`flex ${isActive ? "text-black" : "text-white"}`}
+                    className={`${isActive ? "text-black" : "text-white"}`}
                     to={dynamicPath}
                   >
                     {item.name}
