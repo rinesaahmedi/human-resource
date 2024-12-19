@@ -73,6 +73,10 @@ const Employees = () => {
   }
 
   const handleOnUpdate = async (body) => {
+    const payload = {
+      name: body.name,
+      contact: body.contact,
+    };
     const response = await fetch(`/api/employee/${activeEmployee.id}`, {
       method: "PUT",
       headers: {
@@ -81,7 +85,7 @@ const Employees = () => {
           localStorage.getItem("accessToken")
         )}`,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
