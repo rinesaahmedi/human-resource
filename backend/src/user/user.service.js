@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 const { createPasswordHash } = require("./../utils/crypt.utils");
 
 async function createUser(userData) {
@@ -60,6 +61,59 @@ async function updateUser(id, userData) {
   }
 }
 
+async function updateUserPassword(id, userData) {
+  const newPassword = userData.password;
+  const currentPassword = userData.currentPassword;
+
+  try {
+    if (!id || isNaN(Number(id))) {
+      throw new Error("Invalid user ID.");
+    }
+
+    const userId = Number(id);
+
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { passwordHash: true },
+    });
+
+    if (!existingUser) {
+      throw new Error("User not found.");
+    }
+
+    const comparedPassword = await bcrypt.compare(
+      currentPassword,
+      existingUser.passwordHash
+    );
+
+    if (!comparedPassword) {
+      throw new Error("Wrong password!");
+    }
+
+    const isSameAsCurrent = await bcrypt.compare(
+      newPassword,
+      existingUser.passwordHash
+    );
+    if (isSameAsCurrent) {
+      throw new Error(
+        "New password cannot be the same as the current password."
+      );
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash: hashedNewPassword },
+    });
+
+    return { success: true, message: "Password updated successfully." };
+  } catch (error) {
+    console.error("Error while updating password:", error);
+    throw new Error(error.message || "Unexpected error occurred.");
+  }
+}
+
 async function deleteUser(id) {
   try {
     return await prisma.user.delete({
@@ -75,5 +129,6 @@ module.exports = {
   getAllUser,
   getUserById,
   updateUser,
+  updateUserPassword,
   deleteUser,
 };
