@@ -35,18 +35,28 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch all reviews from the API
   const fetchReviews = async () => {
     try {
-      const response = await fetch("/api/reviews");
-      const data = await response.json();
-      setReviews(data);
-    } catch (error) {
-      toast({
-        title: "Error",
-        message: "Failed to fetch reviews",
-        color: "red",
+      const response = await fetch(`/api/review`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("accessToken")
+          )}`,
+        },
       });
+      const data = await response.json();
+
+      if (response.ok) {
+        setReviews(data);
+        setLoading(false);
+      } else {
+        toast.error(data.message || "Failed to load employee data!");
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
     }
   };
 
