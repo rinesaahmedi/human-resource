@@ -62,12 +62,19 @@ async function updateUser(id, userData) {
 }
 
 async function updateUserPassword(id, userData) {
-  const newPassword = userData.password;
+  const newPassword = userData.newPassword;
   const currentPassword = userData.currentPassword;
 
   try {
     if (!id || isNaN(Number(id))) {
       throw new Error("Invalid user ID.");
+    }
+
+    if (!currentPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Current Password is required.",
+      });
     }
 
     const userId = Number(id);
@@ -81,20 +88,21 @@ async function updateUserPassword(id, userData) {
       throw new Error("User not found.");
     }
 
-    const comparedPassword = await bcrypt.compare(
+    const isCurrentPasswordCorrect = await bcrypt.compare(
       currentPassword,
       existingUser.passwordHash
     );
 
-    if (!comparedPassword) {
-      throw new Error("Wrong password!");
+    if (!isCurrentPasswordCorrect) {
+      throw new Error("Current password is incorrect.");
     }
 
-    const isSameAsCurrent = await bcrypt.compare(
+    const isNewPasswordSameAsOld = await bcrypt.compare(
       newPassword,
       existingUser.passwordHash
     );
-    if (isSameAsCurrent) {
+
+    if (isNewPasswordSameAsOld) {
       throw new Error(
         "New password cannot be the same as the current password."
       );

@@ -64,18 +64,10 @@ router.put("/:id", async (req, res) => {
 // Update user password
 router.patch("/change-password/:id/", async (req, res) => {
   try {
-    const { password } = req.body;
-
-    if (!password) {
-      return res.status(400).json({
-        success: false,
-        message: "Password is required.",
-      });
-    }
-
-    const result = await userService.updateUserPassword(req.params.id, {
-      password,
-    });
+    const result = await userService.updateUserPassword(
+      req.params.id,
+      req.body
+    );
 
     return res.status(200).json(result);
   } catch (error) {
