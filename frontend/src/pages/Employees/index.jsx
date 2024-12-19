@@ -72,6 +72,28 @@ const Employees = () => {
     }
   }
 
+  const handleOnUpdate = async (body) => {
+    const response = await fetch(`/api/employee/${activeEmployee.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      handleGetEmployees();
+      setIsUpdateModalOpen(false);
+      toast.success("Employee Updated");
+    } else {
+      toast.error(data.message || "Something went wrong!");
+    }
+  };
+
   async function onDelete(id) {
     const response = await fetch(`/api/employee/${id}`, {
       method: "DELETE",
@@ -139,7 +161,7 @@ const Employees = () => {
         <UpdateEmployee
           activeEmployee={activeEmployee}
           ref={buttonRef}
-          handleOnSubmit={onSubmit}
+          handleOnSubmit={handleOnUpdate}
         />
       </CustomModal>
     </div>
