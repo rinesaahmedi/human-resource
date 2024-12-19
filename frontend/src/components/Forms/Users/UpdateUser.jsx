@@ -3,20 +3,21 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import Input from "../Input";
+import Input from "../../Input";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  contact: yup.string(),
+  username: yup.string().required("Name is required"),
+  role: yup.string(),
 });
 
-const CreateEmployee = React.forwardRef((props, ref) => {
+const UpdateUser = React.forwardRef((props, ref) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: { ...props.activeUser },
   });
 
   return (
@@ -24,12 +25,12 @@ const CreateEmployee = React.forwardRef((props, ref) => {
       className="flex flex-col gap-4"
       onSubmit={handleSubmit(props.handleOnSubmit)}
     >
-      <Input label="Name" {...register("name")} error={errors?.name?.message} />
       <Input
-        label="Contact / Email"
-        {...register("contact")}
-        error={errors?.contact?.message}
+        label="Username"
+        {...register("username")}
+        error={errors?.username?.message}
       />
+      <Input label="Role" {...register("role")} error={errors?.role?.message} />
       <button ref={ref} type="submit" className="hidden">
         Submit
       </button>
@@ -37,4 +38,4 @@ const CreateEmployee = React.forwardRef((props, ref) => {
   );
 });
 
-export default CreateEmployee;
+export default UpdateUser;

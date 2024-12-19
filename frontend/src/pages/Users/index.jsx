@@ -6,8 +6,8 @@ import { Button, Card } from "@mantine/core";
 
 import CustomModal from "../../components/Modals";
 import UserTable from "../../components/Table/UsersTable";
-import CreateUser from "../../components/Forms/CreateUser";
-import UpdateUser from "../../components/Forms/UpdateUser";
+import CreateUser from "../../components/Forms/Users/CreateUser";
+import UpdateUser from "../../components/Forms/Users/UpdateUser";
 import { useNavigate } from "react-router-dom";
 
 const Users = () => {

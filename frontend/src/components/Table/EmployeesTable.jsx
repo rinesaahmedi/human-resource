@@ -18,7 +18,7 @@ export const EmployeeTable = (props) => {
                 <button
                   className="p-2 rounded bg-slate-200"
                   key={item.title}
-                  onClick={() => item.handleClick(row.id)}
+                  onClick={() => item.handleClick(row)}
                 >
                   {item.icon}
                 </button>
