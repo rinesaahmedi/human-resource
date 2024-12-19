@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { toast } from "react-toastify";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import { Button, Card } from "@mantine/core";
 
 import CustomModal from "../../components/Modals";
 import { EmployeeTable } from "../../components/Table/EmployeesTable";
 import CreateEmployee from "../../components/Forms/Employee/CreateEmployee";
 import UpdateEmployee from "../../components/Forms/Employee/UpdateEmployee";
+import { useNavigate } from "react-router-dom";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -15,6 +16,7 @@ const Employees = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [activeEmployee, setActiveEmployee] = useState();
   const buttonRef = useRef();
+  const navigate = useNavigate();
 
   const handleGetEmployees = async () => {
     const response = await fetch("/api/employee", {
@@ -36,6 +38,13 @@ const Employees = () => {
   };
 
   const actions = [
+    {
+      icon: <FaEye />,
+      title: "View",
+      handleClick: (item) => {
+        navigate(`/employee/${item.id}`);
+      },
+    },
     {
       icon: <FaEdit />,
       title: "Edit",
