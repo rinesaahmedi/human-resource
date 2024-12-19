@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 const { createPasswordHash } = require("./../utils/crypt.utils");
 
 async function createUser(userData) {
@@ -60,6 +61,67 @@ async function updateUser(id, userData) {
   }
 }
 
+async function updateUserPassword(id, userData) {
+  const newPassword = userData.newPassword;
+  const currentPassword = userData.currentPassword;
+
+  try {
+    if (!id || isNaN(Number(id))) {
+      throw new Error("Invalid user ID.");
+    }
+
+    if (!currentPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Current Password is required.",
+      });
+    }
+
+    const userId = Number(id);
+
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { passwordHash: true },
+    });
+
+    if (!existingUser) {
+      throw new Error("User not found.");
+    }
+
+    const isCurrentPasswordCorrect = await bcrypt.compare(
+      currentPassword,
+      existingUser.passwordHash
+    );
+
+    if (!isCurrentPasswordCorrect) {
+      throw new Error("Current password is incorrect.");
+    }
+
+    const isNewPasswordSameAsOld = await bcrypt.compare(
+      newPassword,
+      existingUser.passwordHash
+    );
+
+    if (isNewPasswordSameAsOld) {
+      throw new Error(
+        "New password cannot be the same as the current password."
+      );
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash: hashedNewPassword },
+    });
+
+    return { success: true, message: "Password updated successfully." };
+  } catch (error) {
+    console.error("Error while updating password:", error);
+    throw new Error(error.message || "Unexpected error occurred.");
+  }
+}
+
 async function deleteUser(id) {
   try {
     return await prisma.user.delete({
@@ -75,5 +137,6 @@ module.exports = {
   getAllUser,
   getUserById,
   updateUser,
+  updateUserPassword,
   deleteUser,
 };

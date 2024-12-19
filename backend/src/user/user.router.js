@@ -61,6 +61,25 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// Update user password
+router.patch("/change-password/:id/", async (req, res) => {
+  try {
+    const result = await userService.updateUserPassword(
+      req.params.id,
+      req.body
+    );
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error in /change-password route:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "An internal error occurred.",
+    });
+  }
+});
+
 // Delete user
 router.delete("/:id", async (req, res) => {
   try {
