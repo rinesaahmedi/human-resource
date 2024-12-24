@@ -219,13 +219,14 @@ const Reviews = () => {
       </SimpleGrid>
 
       <CustomModal
-        isOpen={isCreateModalOpen}
         showActionButtons
         onSubmit={() => {
           buttonRef.current.click?.();
         }}
-        onClose={() => setIsCreateModalOpen(false)}
+        onCancel={() => setIsCreateModalOpen(false)}
         title="Create a Review"
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(!isCreateModalOpen)}
       >
         <ReviewForm
           ref={buttonRef}
@@ -234,13 +235,14 @@ const Reviews = () => {
         />
       </CustomModal>
       <CustomModal
-        isOpen={isUpdateModalOpen}
         showActionButtons
         onSubmit={() => {
           buttonRef.current.click?.();
         }}
-        onClose={() => setIsUpdateModalOpen(false)}
+        onCancel={() => setIsUpdateModalOpen(false)}
         title="Update a Review"
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(!isUpdateModalOpen)}
       >
         <UpdateReviewForm
           ref={buttonRef}
