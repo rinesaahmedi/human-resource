@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CustomCard from "../../../components/common/cards/CustomCard.tsx";
+import {SignInForm} from "../../../components/common/forms";
 
-import SignInForm from "../../components/Forms/SignInForm";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -32,18 +32,24 @@ const SignIn = () => {
   }
 
   return (
-    <div className="flex bg-sky-100">
-      <div className="w-1/2 h-screen">
+      <div className="flex gap-[100px] justify-center h-screen items-center">
+        <CustomCard
+            title={"Sign In"}
+            description={"Access your account by signing in."}
+            style={"border-[#94929240] flex flex-col gap-[30px] border-none"}
+            fontStyle={"text-left text-[#599698] font-bold"}
+            descriptionStyle={"text-[#bab9b8]"}
+        >
+          <div>
+            <SignInForm onSubmit={onSubmit} />
+          </div>
+        </CustomCard>
         <img
-          src="https://img.freepik.com/fotos-premium/imagen-fondo_910766-187.jpg?w=826"
-          alt="Background view"
-          className="object-cover object-left-top w-full h-full"
+            src="/images/signIn.svg"
+            alt="Sign in illustration"
+            className="w-[250px]"
         />
       </div>
-      <div className="flex flex-col items-center justify-center w-1/2 h-screen gap-4">
-        <SignInForm onSubmit={onSubmit} />
-      </div>
-    </div>
   );
 };
 
