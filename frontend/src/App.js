@@ -1,10 +1,8 @@
 import {Route, Routes} from "react-router-dom";
-import {Route, Routes, Navigate} from "react-router-dom";
+import React from "react";
 
 import {MantineProvider} from "@mantine/core";
 import "@mantine/core/styles.css";
-
-import useUserStore from "./Stores/userStore";
 
 import Users from "./pages/Users";
 import User from "./pages/User";
@@ -21,6 +19,7 @@ import EmployeeView from "./pages/Employees/Employee";
 import Department from "./pages/Department";
 import Reviews from "./pages/Reviews";
 
+
 function App() {
     return (
         <MantineProvider withGlobalStyles withNormalizeCSS>
@@ -36,9 +35,7 @@ function App() {
                 <Route
                     path="/"
                     element={
-                        <ProtectedRoute>
                             <MainLayout/>
-                        </ProtectedRoute>
                     }
                 >
                     <Route index element={<Home/>}/>

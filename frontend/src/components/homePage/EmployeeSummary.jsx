@@ -3,7 +3,7 @@ import Button from "../common/button";
 
 const EmployeeSummary = ({ totalEmployees, recentHires, departments }) => {
     return (
-        <div className="bg-white py-16 px-6   max-w-[1200px] mx-auto">
+        <div className="bg-white py-16 px-6 mx-auto">
             <h2 className="text-xl font-semibold text-[#1F263E] mb-6 text-center">
                 Employee Management Summary
             </h2>
