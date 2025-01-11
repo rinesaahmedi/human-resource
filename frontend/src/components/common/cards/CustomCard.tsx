@@ -19,7 +19,7 @@ const CustomCard = (props: props) => {
         descriptionStyle
     } = props
     return (
-        <div className={`${style} max-w-[500px] xs:max-w-[100%] border border-black h-[auto] w-full rounded-[20px] p-[30px]`}>
+        <div className={`${style} max-w-[500px] xs:w-[100%] border border-black h-[auto] w-full rounded-[20px] p-[30px]`}>
             <div className={'flex flex-col gap-[10px]'}>
                 <h1 className={`${fontStyle} leading-[110%] text-[40px]`}>{title}</h1>
                 <p className={`${descriptionStyle} `}>{description}</p>

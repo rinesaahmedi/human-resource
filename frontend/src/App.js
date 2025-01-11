@@ -18,6 +18,8 @@ import MainLayout from "./components/MainLayout";
 import EmployeeView from "./pages/Employees/Employee";
 import Department from "./pages/Department";
 import Reviews from "./pages/Reviews";
+import ContactUs from "./pages/contact-us";
+import AboutUs from "./pages/about-us";
 
 
 function App() {
@@ -46,6 +48,10 @@ function App() {
                     <Route path="/employee/:id" element={<EmployeeView/>}/>
                     <Route path="/department" element={<Department/>}/>
                     <Route path="/reviews" element={<Reviews/>}/>
+                    <Route path="/contact-us" element={<ContactUs/>}/>
+                    <Route path="/about-us" element={<AboutUs/>}/>
+
+
                 </Route>
             </Routes>
         </MantineProvider>

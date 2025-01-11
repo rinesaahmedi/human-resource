@@ -2,8 +2,8 @@ import React from 'react';
 
 const IntroductionSection = () => {
     return (
-        <div className="bg-gradient-to-br from-[#1F263E] to-[#88C0C3] h-screen flex flex-col lg:flex-row justify-center items-center text-white text-left gap-[20px] lg:gap-[40px] ">
-            <div className={"flex max-w-[1600px] w-[100%] items-center justify-center justify-between"}>
+        <div className="bg-gradient-to-br from-[#1F263E] to-[#88C0C3] h-[80vh] flex  lg:flex-row  justify-center items-center text-white text-left gap-[20px] lg:gap-[40px] p-[40px] ">
+            <div className={"flex max-w-[1200px] w-[100%] md:flex-col-reverse xs:flex-col-reverse lg:flex-row items-center justify-between"}>
                 <div className="flex flex-col max-w-[630px] text-center lg:text-left">
                     <h1 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight">
                         Improving HR Manager Workflow Radically

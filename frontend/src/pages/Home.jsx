@@ -4,7 +4,7 @@ import AboutUsSection from "../components/homePage/AboutUsSection";
 import Reviews from "../components/homePage/Reviews";
 import SevicesSection from "../components/homePage/SevicesSection";
 import EmployeeSummary from "../components/homePage/EmployeeSummary";
-import Footer from "../components/layout/Footer";
+// import Footer from "../components/layout/Footer";
 
 const Home = () => {
     const employeeData = {
@@ -24,8 +24,6 @@ const Home = () => {
 
             <SevicesSection/>
             <Reviews/>
-            <Footer/>
-
         </div>
     );
 };
