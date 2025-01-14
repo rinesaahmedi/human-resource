@@ -27,7 +27,6 @@ function App() {
         <MantineProvider withGlobalStyles withNormalizeCSS>
             <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Home />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/password" element={<Password />} />
@@ -36,6 +35,7 @@ function App() {
 
                 {/* Protected Routes */}
                 <Route path="/" element={<MainLayout />}>
+                    <Route path="/" element={<Home />} />
                     <Route path="employees" element={<Employees />} />
                     <Route path="users" element={<Users />} />
                     <Route path="reports" element={<Employees />} />
