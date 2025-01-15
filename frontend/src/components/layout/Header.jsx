@@ -19,10 +19,10 @@ const Header = () => {
 
                 {/* Desktop Navbar Items */}
                 <div className="hidden md:flex space-x-4">
-                    <a href="#home" className="text-white hover:text-gray-400 pr-[20px]">Home</a>
-                    <a href="#about" className="text-white hover:text-gray-400 pr-[20px]">About</a>
-                    <a href="#services" className="text-white hover:text-gray-400 pr-[20px]">Services</a>
-                    <a href="#contact" className="text-white hover:text-gray-400 pr-[20px]">Contact</a>
+                    <a href="/" className="text-white hover:text-gray-400 pr-[20px]">Home</a>
+                    <a href="/about-us" className="text-white hover:text-gray-400 pr-[20px]">About</a>
+                    <a href="/department" className="text-white hover:text-gray-400 pr-[20px]">Services</a>
+                    <a href="/contact-us" className="text-white hover:text-gray-400 pr-[20px]">Contact</a>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -54,14 +54,14 @@ const Header = () => {
                 <div className="flex justify-end p-4">
                     <button
                         className="text-white text-3xl"
-                        onClick={handleCloseMenu} // Close the mobile menu when the close button is clicked
+                        onClick={handleCloseMenu}
                     >
                         &times;
                     </button>
                 </div>
                 <div className="flex flex-col items-center space-y-6 mt-16">
-                    <a href="#home" className="text-white text-2xl hover:text-gray-400">Home</a>
-                    <a href="#about" className="text-white text-2xl hover:text-gray-400">About</a>
+                    <a href="/contact-us" className="text-white text-2xl hover:text-gray-400">Home</a>
+                    <a href="/about-us" className="text-white text-2xl hover:text-gray-400">About</a>
                     <a href="#services" className="text-white text-2xl hover:text-gray-400">Services</a>
                     <a href="#contact" className="text-white text-2xl hover:text-gray-400">Contact</a>
                 </div>
