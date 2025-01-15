@@ -14,15 +14,19 @@ const Header = () => {
 
     return (
         <nav className="max-w-[1600px] p-[25px] fixed w-full z-10 top-0 left-0 right-0 bg-[rgba(31,38,62,0.3)] rounded-lg shadow-md backdrop-blur-[17.2px] mx-auto">
-            <div className="flex items-center justify-center space-x-6 w-full">
-                <div className="text-white font-semibold text-lg">Logo</div>
+            <div className="flex max-w-[1500px] w-[100%] items-center justify-between space-x-6 w-full">
+                <div className="text-white font-semibold text-[26px]">
+                    <a href="/" className="text-white hover:text-gray-400 pr-[20px]">NextHire</a>
+
+                </div>
 
                 {/* Desktop Navbar Items */}
                 <div className="hidden md:flex space-x-4">
-                    <a href="/" className="text-white hover:text-gray-400 pr-[20px]">Home</a>
+                    <a href="/my-profile/:id" className="text-white hover:text-gray-400 pr-[20px]">My Profile</a>
                     <a href="/about-us" className="text-white hover:text-gray-400 pr-[20px]">About</a>
-                    <a href="/department" className="text-white hover:text-gray-400 pr-[20px]">Services</a>
+                    <a href="/department" className="text-white hover:text-gray-400 pr-[20px]">Department</a>
                     <a href="/contact-us" className="text-white hover:text-gray-400 pr-[20px]">Contact</a>
+                    <a href="/employee/:id" className="text-white hover:text-gray-400 pr-[20px]">Employees</a>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -30,7 +34,7 @@ const Header = () => {
                     onClick={handleMenuToggle}
                     className="md:hidden text-white"
                 >
-                    <svg
+                <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6"
                         fill="none"
@@ -60,10 +64,12 @@ const Header = () => {
                     </button>
                 </div>
                 <div className="flex flex-col items-center space-y-6 mt-16">
-                    <a href="/contact-us" className="text-white text-2xl hover:text-gray-400">Home</a>
-                    <a href="/about-us" className="text-white text-2xl hover:text-gray-400">About</a>
-                    <a href="#services" className="text-white text-2xl hover:text-gray-400">Services</a>
-                    <a href="#contact" className="text-white text-2xl hover:text-gray-400">Contact</a>
+                    <a href="/about-us" className="text-white hover:text-gray-400 pr-[20px]">About</a>
+                    <a href="/department" className="text-white hover:text-gray-400 pr-[20px]">Department</a>
+                    <a href="/contact-us" className="text-white hover:text-gray-400 pr-[20px]">Contact</a>
+                    <a href="/my-profile/:id" className="text-white hover:text-gray-400 pr-[20px]">My Profile</a>
+                    <a href="/employee/:id" className="text-white hover:text-gray-400 pr-[20px]">Employees</a>
+
                 </div>
             </div>
         </nav>
