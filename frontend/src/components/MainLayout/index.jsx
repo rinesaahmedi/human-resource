@@ -3,8 +3,8 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 
 // import SideBar from "../SideBar";
-import Header from "../layout/Header";
 import Footer from "../layout/Footer";
+import Header from "../layout/Header";
 
 const MainLayout = () => {
   return (
