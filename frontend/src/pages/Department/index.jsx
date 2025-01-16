@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { toast } from "react-toastify";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { Button, Card } from "@mantine/core";
+import {Card } from "@mantine/core";
 
 import CustomModal from "../../components/Modals";
 
 import DepartmentTable from "../../components/Table/DepartmentTable";
 import CreateDepartment from "../../components/Forms/Department/CreateDepartment";
 import UpdateDepartment from "../../components/Forms/Department/UpdateDepartment";
+import Button from "../../components/common/button";
 
 const Department = () => {
   const [departments, setDepartments] = useState([]);
@@ -119,15 +120,15 @@ const Department = () => {
 
   return (
     <div>
-      <Card>
+      <Card style={{padding: "110px"}}>
         <div className="flex flex-col gap-7">
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">Department</h3>
-            <Button
+          <div className="flex items-center justify-between ">
+            <h3 className="text-[30px] font-semibold">Department</h3>
+            <Button variant={'blue'}
               onClick={() => setIsCreateModalOpen(true)}
-              title="Department"
+              title=" Add Department"
             >
-              Add Department
+              {/*Add Department*/}
             </Button>
           </div>
           <DepartmentTable

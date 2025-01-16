@@ -48,7 +48,7 @@ const AboutUsSection = () => {
                     })}
                     <div className="decoration-[#599698] hover:decoration-[#1F263E] underline-offset-1 ">
                         <NavLink className="underline text-[#599698] hover:text-[#1F263E] underline-offset-[8px]"
-                                 to={'/'}>
+                                 to={'/about-us'}>
                             Read more
                         </NavLink>
                     </div>

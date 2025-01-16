@@ -4,7 +4,8 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import Input from "../Input";
-import Button from "../Button";
+import Button from "../common/button";
+// import Button from "../Button";
 
 const usernameRegEx = /^(?=.{3,16}$)[a-zA-Z0-9](?:[a-zA-Z0-9_-]*[a-zA-Z0-9])?$/;
 

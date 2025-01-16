@@ -1,11 +1,10 @@
 import React from "react";
-import Header from "../components/layout/Header";
 import IntroductionSection from "../components/homePage/IntroductionSection";
 import AboutUsSection from "../components/homePage/AboutUsSection";
 import Reviews from "../components/homePage/Reviews";
 import SevicesSection from "../components/homePage/SevicesSection";
 import EmployeeSummary from "../components/homePage/EmployeeSummary";
-import Footer from "../components/layout/Footer";
+// import Footer from "../components/layout/Footer";
 
 const Home = () => {
     const employeeData = {
@@ -15,7 +14,6 @@ const Home = () => {
     };
     return (
         <div>
-            <Header />
             <IntroductionSection/>
             <AboutUsSection/>
             <EmployeeSummary
@@ -26,8 +24,6 @@ const Home = () => {
 
             <SevicesSection/>
             <Reviews/>
-            <Footer/>
-
         </div>
     );
 };
