@@ -2,8 +2,6 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 
-import useUserStore from "./Stores/userStore";
-
 import Users from "./pages/Users";
 import User from "./pages/User";
 import SignIn from "./pages/auth/SignIn";
@@ -65,5 +63,5 @@ function App() {
     </MantineProvider>
   );
 }
-
+      
 export default App;
