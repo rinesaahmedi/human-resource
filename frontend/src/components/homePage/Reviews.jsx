@@ -95,15 +95,15 @@ const HomeReviews = () => {
                     }}
                     className="pb-10"
                 >
-                    {reviews.map((review, index) => (
-                        <SwiperSlide key={index}>
-                            <ReviewCard
-                                name={review.name}
-                                review={review.comments}
-                                rating={review.rating}
-                            />
-                        </SwiperSlide>
-                    ))}
+                    {/*{reviews.map((review, index) => (*/}
+                    {/*    <SwiperSlide key={index}>*/}
+                    {/*        <ReviewCard*/}
+                    {/*            name={review.name}*/}
+                    {/*            review={review.comments}*/}
+                    {/*            rating={review.rating}*/}
+                    {/*        />*/}
+                    {/*    </SwiperSlide>*/}
+                    {/*))}*/}
                 </Swiper>
                 <div className="text-center mt-8 flex items-center justify-center">
                     <Button
