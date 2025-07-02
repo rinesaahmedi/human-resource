@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomCard from "../../components/common/cards/CustomCard.tsx";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import Button from "../../components/common/button";
+import {toast} from "react-toastify";
 
 
 const coreValues = [
@@ -10,6 +11,7 @@ const coreValues = [
     { title: 'Respect', description: 'We embrace diversity and treat all individuals with respect and dignity.' },
     { title: 'Collaboration', description: 'We work together, share knowledge, and help each other to succeed.' },
 ];
+
 
 const teamMembers = [
     {
@@ -49,6 +51,29 @@ const teamMembers = [
 ];
 
 const Index = () => {
+    const [users, setUsers] = useState([]);
+
+    const handleGetUsers = async () => {
+        const response = await fetch("/api/user", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${JSON.parse(
+                    localStorage.getItem("accessToken")
+                )}`,
+            },
+        });
+
+        const responseToJson = await response.json();
+        if (response.ok) {
+            setUsers(responseToJson.data);
+        } else {
+            toast.error(responseToJson.message || "Something went wrong!");
+        }
+    };
+    useEffect(() => {
+        handleGetUsers();
+    }, []);
     return (
         <div
 
@@ -125,18 +150,14 @@ const Index = () => {
                         }}
                         className="pb-10 "
                     >
-                        {teamMembers.map((member, index) => (
+                        {users.map((member, index) => (
                             <SwiperSlide key={index} className={'pb-[60px]'}>
                                 <div className="bg-white rounded-lg shadow-lg overflow-hidden pb-[60px] ">
-                                    <img
-                                        src={member.img}
-                                        alt={member.name}
-                                        className="w-full h-48 object-cover"
-                                    />
+
                                     <div className="p-[10px] text-center ">
-                                        <h3 className="text-xl font-semibold text-gray-800">{member.name}</h3>
+                                        <h3 className="text-xl font-semibold text-gray-800">{member.name} {member.username}</h3>
                                         <p className="text-gray-600">{member.role}</p>
-                                        <p className="text-gray-500 mt-2">{member.description}</p>
+                                        <p className="text-gray-500 mt-2">{member.department}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>

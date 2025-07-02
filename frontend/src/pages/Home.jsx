@@ -12,6 +12,7 @@ const Home = () => {
         recentHires: 5,
         departments: 8,
     };
+
     return (
         <div>
             <IntroductionSection/>

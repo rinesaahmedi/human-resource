@@ -1,8 +1,10 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify";
 
 function UserDashboard() {
     const navigate = useNavigate();
+    const [employees, setEmployees] = useState([]);
 
     const users = Array.from({ length: 50 }, (_, index) => ({
         id: index + 1,
@@ -10,6 +12,28 @@ function UserDashboard() {
         email: index % 2 === 0 ? "john.doe@example.com" : "jane.smith@example.com",
         role: index % 2 === 0 ? "Admin" : "User",
     }));
+    const handleGetEmployees = async () => {
+        const response = await fetch("/api/employee", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${JSON.parse(
+                    localStorage.getItem("accessToken")
+                )}`,
+            },
+        });
+
+        const responseToJson = await response.json();
+        if (response.ok) {
+            setEmployees(responseToJson.data);
+        } else {
+            toast.error(responseToJson.message || "Something went wrong!");
+        }
+    };
+
+    useEffect(() => {
+        handleGetEmployees();
+    }, []);
 
     const itemsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
@@ -52,7 +76,7 @@ function UserDashboard() {
                     </tr>
                     </thead>
                     <tbody>
-                    {currentUsers.map((user) => (
+                    {employees.map((user) => (
                         <tr key={user.id} className="border-t hover:bg-gray-50">
                             <td className="px-4 py-2 text-sm text-gray-700">{user.id}</td>
                             <td className="px-4 py-2 text-sm text-gray-700">{user.name}</td>

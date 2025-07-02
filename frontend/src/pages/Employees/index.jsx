@@ -143,7 +143,7 @@ const Employees = () => {
             headers={[
               { title: "Employee" },
               { title: "Department" },
-              { title: "Contact" },
+              { title: "Contzact" },
             ]}
             data={employees}
           />
