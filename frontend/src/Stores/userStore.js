@@ -5,7 +5,7 @@ const useUserStore = create(
   persist((set, get) => ({
     user: null,
     accessToken: "",
-    isSignedIn: () => !!get().accessToken,
+    isSignedIn: () =>!!get().accessToken,
     setUser: (user) => set({ user }),
     setAccessToken: (token) => set({ accessToken: token }),
     clearUser: () => set({ user: null, accessToken: "" }),
