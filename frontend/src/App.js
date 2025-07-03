@@ -16,7 +16,8 @@ import MainLayout from "./components/MainLayout";
 import EmployeeView from "./pages/Employees/Employee";
 import Department from "./pages/Department";
 import Reviews from "./pages/Reviews";
-
+import Garat from "./pages/Garat";
+import Ekipi from "./pages/Ekipi/ekipi";
 function ProtectedRoute({ children }) {
   const { isSignedIn } = useUserStore();
   return isSignedIn() ? children : <Navigate to="/signin" />;
@@ -47,6 +48,8 @@ const App = () => {
           <Route path="/employee/:id" element={<EmployeeView />} />
           <Route path="/department" element={<Department />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/garat" element={<Garat />} />
+          <Route path="/ekipi" element={<Ekipi />} />
         </Route>
       </Routes>
     </MantineProvider>

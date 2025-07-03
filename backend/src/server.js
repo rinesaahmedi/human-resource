@@ -12,7 +12,8 @@ const employeeRouter = require("./employee/employee.router");
 const userRouter = require("./user/user.router");
 const departmentRouter = require("./department/department.router");
 const roleRouter = require("./role/role.router");
-
+const garaRoutes = require("./gara/gara.routes");
+const ekipiRoutes = require("./ekipi/ekipi.routes");
 const publicRoutes = ["/api/auth/signin", "/api/auth/signup", "/api"];
 
 // Configure app
@@ -57,7 +58,8 @@ app.use("/api/user", userRouter);
 app.use("/api/department", departmentRouter);
 // app.use("/api/review", reviewRouter);
 app.use("/api/role", roleRouter);
-
+app.use("/api/garat", garaRoutes);
+app.use("/api/ekipet", ekipiRoutes);
 app.get("/api", (req, res) => {
   res.json({ success: true, message: "Welcome to HRM api!" });
 });

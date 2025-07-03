@@ -87,3 +87,19 @@ model Task {
   status          String
   employee        Employee @relation(fields: [employeeId], references: [id])
 }
+
+model Gara {
+  id         Int     @id @default(autoincrement())
+  emriGares  String
+  llojiGares String
+  ekipet     Ekipi[]
+}
+
+model Ekipi {
+  id             Int    @id @default(autoincrement())
+  emriEkipit     String
+  numriPjestareve Int
+  garaId         Int
+  gara           Gara   @relation(fields: [garaId], references: [id])
+}
+
